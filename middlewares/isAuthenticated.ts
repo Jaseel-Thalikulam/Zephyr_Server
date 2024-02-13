@@ -10,9 +10,10 @@ export function isAuthenticated(req: CustomRequest, res: Response, next: NextFun
     try {
         let tokenWithBearer = req.get("authorization");
         if (!tokenWithBearer) {
-            return res.status(404).json({ success: false, message: "Token not found" });
+            return res.status(401).json({ success: false, message: "Token not found" });
         }
         const token = tokenWithBearer.split(" ")[1];
+        
         const decoded = jwt.verify(token, "mySecretKey");
 
         if (typeof decoded !== 'string' && decoded.userId) {
@@ -28,7 +29,7 @@ export function isAuthenticated(req: CustomRequest, res: Response, next: NextFun
         next();
 
     } catch (error) {
-        // console.error(error);
+        console.error(error);
         return res.status(401).json({ success: false, message: "Unauthorized" });
     }
     

@@ -8,22 +8,12 @@ import { IAccessTokenResponse } from "../Interfaces/IAccessTokenResponse";
 
 export const generateAccessToken = async (userId: string): Promise<IAccessTokenResponse> => {
     
-    const userData = await User.findById(userId)
+
     
-    if (userData) {
+    if (userId) {
     
-        const { _id,name,email,profileImage } = userData
-        
-        
-        const user:ITokenUser =  {
-            name,
-            email,
-            profileImage,
-            _id
-        }
        
-       
-       const token = await jwt.sign({ user }, "mySecretKey", {
+       const token = await jwt.sign({ userId }, "mySecretKey", {
             expiresIn: "1m",
        });
         
@@ -34,6 +24,7 @@ export const generateAccessToken = async (userId: string): Promise<IAccessTokenR
 
     };
   
+
 export const generateRefreshToken = async (userId:string) => {
     return jwt.sign({userId}, "mySecretKey", {
       expiresIn: "1w",
@@ -44,11 +35,16 @@ export const generateRefreshToken = async (userId:string) => {
 export const getNewAccessToken = async (req:Request, res:Response) => {
     try {
 
-        const {refreshToken } = req.body
-        
+        const { refreshToken } = req.body
+      
+        if (!refreshToken) {
+      
+            return res.status(401).json({ success: false, message: "Unauthorized" })
+            
+        }
+
         const isRefreshTokenValid = await verifyRefreshToken(refreshToken)
  
-    
         if (isRefreshTokenValid.success) {
 
             const accessToken = await generateAccessToken(isRefreshTokenValid.id)
@@ -74,6 +70,7 @@ export const getNewAccessToken = async (req:Request, res:Response) => {
        return res.status(500).json({message:"Internal Server Error"})
     
     }
+    
 }
 
 

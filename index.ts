@@ -16,7 +16,7 @@ const CLIENT_URI = process.env.CLIENT_URI as string
 
 const corsOptions = {
   origin: CLIENT_URI,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  methods: 'GET,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
 };
