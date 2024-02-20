@@ -83,11 +83,9 @@ const verifyRefreshToken = async (refreshToken: string) => {
         if (typeof decoded !== 'string' && decoded.userId) {
 
             return { success: true, id: decoded.userId };
-
+            
         } else {
-            
-            console.log(decoded, "The decoded String");
-            
+             
             return{success:false}
         }
     

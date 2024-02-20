@@ -61,6 +61,10 @@ const accessToken = accessTokenPart ? accessTokenPart.split('=')[1] : null;
         
                 const { success, accessToken, refreshToken } = Tokens
                 if (success) {
+
+                    // res.cookie('accessToken', accessToken, { httpOnly: true,sameSite:"none",secure:true });
+                    // res.cookie('refreshToken', refreshToken, { httpOnly: true,sameSite:"none"npm  });
+                    
                     return res.status(200).json({message:"SuccessFully LoggedIn",accessToken,refreshToken})
                 }
         
